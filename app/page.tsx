@@ -9,31 +9,50 @@ const containerStyle = {
     height: "100vh",
 };
 
-const center = {
-    lat: 0, // Default latitude
-    lng: 0, // Default longitude
+// Default center (somewhere neutral if initial geolocation isn't found yet)
+const defaultCenter = {
+    lat: 43.472792, // Default latitude
+    lng: -80.539621, // Default longitude
 };
 
-export default function MyMap() {
+export default function Map() {
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAPKEY as string,
     });
 
-    const [map, setMap] = useState<google.maps.Map | null>(null);
+    const [map, setMap] = useState(null)
     const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
+    const [initialCenter, setInitialCenter] = useState(defaultCenter); // Map's initial center
+    const [gotInitialPosition, setGotInitialPosition] = useState(false);
 
-    // Function to update the user's location
+    // Function to update the user's location without moving the map center
     const updatePosition = (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
-        setCurrentPosition({ lat: latitude, lng: longitude });
 
-        if (map) {
-            map.panTo({ lat: latitude, lng: longitude });
+        // Set initial center only once (when the user first loads the page)
+        if (!gotInitialPosition) {
+            setInitialCenter({ lat: latitude, lng: longitude });
+            setGotInitialPosition(true);
         }
+
+        // Update marker's position with real-time user location
+        setCurrentPosition({ lat: latitude, lng: longitude });
     };
 
-    // Start watching the user's location in real-time
+    const onLoad = useCallback(function callback(map: any) {
+        // This is just an example of getting and using the map instance!!! don't just blindly copy!
+        const bounds = new window.google.maps.LatLngBounds(defaultCenter);
+        map.fitBounds(bounds);
+    
+        setMap(map)
+      }, [])
+    
+      const onUnmount = useCallback(function callback(map: any) {
+        setMap(null)
+      }, [])
+
+    // Watch the user's location in real-time, but do not move the map center after the first position
     useEffect(() => {
         if (navigator.geolocation) {
             const watchId = navigator.geolocation.watchPosition(
@@ -48,18 +67,10 @@ export default function MyMap() {
                 }
             );
 
-            return () => navigator.geolocation.clearWatch(watchId); // Clean up
+            return () => navigator.geolocation.clearWatch(watchId); // Clean up watcher on unmount
         }
-    }, [map]);
-
-    // Load map and set bounds based on the user's current location
-    const onLoad = useCallback((map: google.maps.Map) => {
-        setMap(map);
     }, []);
 
-    const onUnmount = useCallback(() => {
-        setMap(null);
-    }, []);
 
     return (
         <div>
@@ -69,7 +80,8 @@ export default function MyMap() {
                 <div className="-z-10 h-[932px] w-[430px]">
                     <GoogleMap
                         mapContainerStyle={containerStyle}
-                        center={currentPosition} // Set the initial center as the current position
+                        // Only use the initial center and don't change it on subsequent updates
+                        center={defaultCenter} 
                         zoom={14}
                         onLoad={onLoad}
                         onUnmount={onUnmount}
@@ -77,6 +89,7 @@ export default function MyMap() {
                             disableDefaultUI: true,
                         }}
                     >
+                        {/* The marker follows the user's current position */}
                         <Marker position={currentPosition} />
                     </GoogleMap>
                 </div>

@@ -39,7 +39,6 @@ const Page: NextPage = () => {
         const json: SuccessResponse | ErrorResponse = await res.json();
         const data = json.data;
 
-
         if ("error" in data) {
             console.error(data.error);
             setProcessing(false);
@@ -47,17 +46,18 @@ const Page: NextPage = () => {
         }
         // Goose identified
 
-
         if (data.id == -1) {
             // not a goose
         }
         console.log(data);
         console.log(data.trait);
-        if (data.id != 0 || true) {
+        console.log(data.id);
+        if (data.id == 0) {
             const res = await fetch(`/api/gis/generatePixels`, {
                 method: "POST",
                 body: JSON.stringify({
                     trait: data.trait,
+                    id: data.id,
                 }),
             });
             const json = await res.json();
@@ -79,14 +79,12 @@ const Page: NextPage = () => {
                 >
                     {({ getScreenshot }) => (
                         <div className="absolute bottom-20 w-[430px] p-4 flex items-center justify-center">
-
-                        <button
-                            onClick={() => {
-                                upload(getScreenshot());
-                            }}
-                            className="border-4 rounded-full p-8 z-50"
-                        >
-                        </button>
+                            <button
+                                onClick={() => {
+                                    upload(getScreenshot());
+                                }}
+                                className="border-4 rounded-full p-8 z-50"
+                            ></button>
                         </div>
                     )}
                 </Webcam>

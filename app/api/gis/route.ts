@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
 
             const newGooseData = {
                 id: id,
-                name: "hello",
+                name: "flullk",
                 traitsPrompt: parsedData.trait,
                 views: 1,
                 finder: "Person",

@@ -1,23 +1,26 @@
 import OpenAI from "openai";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
+import connect from "@/lib/db"
+import  Goose  from "@/lib/modals/goose";
 
 const client = new OpenAI();
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { trait } = body;
+        const trait = body.trait;
+        const gooseID = body.id;
         console.log(body);
 
-        if (!trait) {
+        if (!trait || gooseID === undefined) {
             return NextResponse.json(
-                { message: "Trait is required" },
+                { message: "Trait and ID is required" },
                 { status: 400 }
             );
         }
 
-        const prompt = `Generate a gameish canadian goose pixel art image with the distinct trait of: ${trait} with a red ribbon`;
+        const prompt = `Generate a gameish canadian goose pixel art image with the distinct trait of: ${trait}`;
 
         const imageResponse = await client.images.generate({
             prompt,
@@ -27,7 +30,7 @@ export async function POST(req: NextRequest) {
 
         const generatedImageUrl = imageResponse.data[0].url;
 
-        const imageResponseBuffer = await axios.get(generatedImageUrl, {
+        const imageResponseBuffer = await axios.get(generatedImageUrl as string, {
             responseType: "arraybuffer",
         });
         const imageBase64 = Buffer.from(imageResponseBuffer.data).toString(
@@ -48,18 +51,23 @@ export async function POST(req: NextRequest) {
         );
 
         const imgurUrl = imgurResponse.data.data.link;
+        console.log(imgurUrl);
 
-        const gooseData = {
-            image: imgurUrl,
-        };
+        await connect();
+        // Filter by key id and not _id
 
-        const sendGooseData = await fetch("http://localhost:3001/api/gis", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(gooseData),
-        });
+        const goose = await Goose.findOne({ "traitsPrompt": trait });
+        goose.image = imgurUrl;
+        await goose.save();
+        console.log("saved goosey");
+
+        // const sendGooseData = await fetch("http://localhost:3001/api/gis", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify(gooseData),
+        // });
 
         return NextResponse.json({ success: true, imgurUrl });
     } catch (error: any) {
