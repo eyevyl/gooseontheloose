@@ -58,7 +58,7 @@ async function quoteGoose() {
 async function getName(){
      const chatName = await cohere.chat({
          model: "command",
-         message: "Write a funny and punny name for a goose. Only output the name and nothing else.",
+         message: "Write a fun name for a goose. Only output the name and nothing else.",
      });
 
     console.log(chatName);

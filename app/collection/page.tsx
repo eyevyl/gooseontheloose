@@ -14,11 +14,11 @@ async function getGoose() {
 
 function GooseProfile(goose: any) {
     return (
-        <div>
+        <div className={``}>
             <RxCross2 />
             <img src={goose.image} alt={`${goose.name} sprite`} />
-            <h1>{goose.name}</h1>
-            
+            <h1>{`Name: ${goose.name}`}</h1>
+            <p>{`Midterm: ${goose.midterm}`}</p>
         </div>
     );
 }
@@ -44,5 +44,4 @@ export default function Collection() {
             ))}
         </div>
     );
-
 }

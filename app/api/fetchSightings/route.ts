@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
         await connect(); 
         const recentSightings = await Sighting.find().sort({createdAt: -1}).limit(3);
 
-        console.log("Fetched sightings: " recentSightings);
+        console.log("Fetched sightings: " + recentSightings);
 
         return new NextResponse(JSON.stringify(recentSightings), { status: 200});
     } catch (error: any) {
