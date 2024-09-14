@@ -8,7 +8,7 @@ import Webcam from "react-webcam";
 const videoConstraints = {
     width: 430,
     height: 932,
-    facingMode: "user",
+    facingMode: ["environment", "user"],
 };
 
 type ErrorResponse = {
@@ -40,7 +40,6 @@ const Page: NextPage = () => {
             }),
         });
         const json: SuccessResponse | ErrorResponse = await res.json();
-        
 
         if ("error" in json) {
             console.error(json.error);

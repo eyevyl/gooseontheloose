@@ -14,9 +14,12 @@ export async function POST(req: NextRequest) {
         await newSighting.save();
 
         return new NextResponse(
-            JSON.stringify({ message: "New sighting added.", sighting: newSighting })
-        )
-    } catch {
-
+            JSON.stringify({ message: "New sighting added.", sighting: newSighting }), 
+            {status: 200}
+        );
+    } catch (error: any) {
+        return new NextResponse("Error in creating sighting" + error.message, {
+            status: 500,
+        });
     }
 }

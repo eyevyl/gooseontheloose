@@ -2,6 +2,7 @@
 
 import connect from "@/lib/db";
 import Goose from "@/lib/modals/goose";
+import { RxCross2 } from "react-icons/rx";
 import { useState, useEffect } from "react";
 
 async function getGoose() {
@@ -14,7 +15,7 @@ async function getGoose() {
 function GooseProfile(goose: any) {
     return (
         <div>
-            
+            <RxCross2 />
         </div>
     );
 }
