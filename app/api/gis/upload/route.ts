@@ -14,9 +14,9 @@ const client = new OpenAI();
 const prompt = `You are an assistant that will generate a description of stuff you see`;
 
 export async function POST(req: NextRequest) {
-    const rawB64 = await req.body;
-    console.log("base" + rawB64);
-    const b64 = decodeURIComponent(JSON.parse(rawB64).base64 as string);
+    const rawB64 = (await req.json()).base64;
+    const b64 = decodeURIComponent(rawB64 as string);
+    
 
     if (b64 === undefined) {
         return NextResponse.json({
@@ -26,15 +26,13 @@ export async function POST(req: NextRequest) {
         });
     }
 
-    
-    // Getting the actual AI answer
     client.chat.completions
         .create({
-            model: "gpt-4-vision-preview",
+            model: "gpt-4o",
             messages: [
                 {
                     role: "system",
-                    content: PROMPT,
+                    content: prompt,
                 },
                 {
                     role: "user",
@@ -61,9 +59,10 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: `${rawAnswer}!` });
         })
         .catch((reason) => {
-            res.status(404).json({
+            console.error(reason);
+            return NextResponse.json({
                 success: false,
-                failedReason: reason,
+                failedReason: "AI failed to generate a response",
                 answer: "",
             });
         });

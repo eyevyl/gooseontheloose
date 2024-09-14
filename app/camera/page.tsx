@@ -20,6 +20,8 @@ const Page: NextPage = () => {
     const [text, setText] = useState<string | null>(null);
 
     async function upload(thing: string) {
+        console.log("thing\n" + thing);
+
         const res = await fetch(`/api/gis/upload`, {
             method: "POST",
             body: JSON.stringify({
@@ -44,8 +46,7 @@ const Page: NextPage = () => {
                 {({ getScreenshot }) => (
                     <button
                         onClick={() => {
-                            setImageSrc(getScreenshot());
-                            upload(imageSrc);
+                            upload(getScreenshot());
                         }}
                         className="border-2 border-white rounded-xl m-4 py-2 px-4"
                     >
@@ -63,22 +64,6 @@ const Page: NextPage = () => {
             <h1>{text ? <div>{text}</div> : <div>No text</div>}</h1>
         </>
     );
-};
-
-const toBase64 = (file: File) => {
-    return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-
-        fileReader.readAsDataURL(file);
-
-        fileReader.onload = () => {
-            resolve(fileReader.result);
-        };
-
-        fileReader.onerror = (error) => {
-            reject(error);
-        };
-    });
 };
 
 export default Page;

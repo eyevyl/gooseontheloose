@@ -13,6 +13,6 @@ export async function GET(req: NextRequest) {
         const geese = await Goose.find();
         return new NextResponse(JSON.stringify(geese), {status: 200}); 
     } catch (error: any) {
-        return NextResponse.json("Error in fetching users" + error.message, {status: 500,});
+        return NextResponse.json("Error in fetching geese" + error.message, {status: 500,});
     }
 }
