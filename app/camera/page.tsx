@@ -37,24 +37,26 @@ const Page: NextPage = () => {
 
     return (
         <>
-            <Webcam
-                audio={false}
-                height={932}
-                screenshotFormat="image/jpeg"
-                width={430}
-                videoConstraints={videoConstraints}
-            >
-                {({ getScreenshot }) => (
-                    <button
-                        onClick={() => {
-                            upload(getScreenshot());
-                        }}
-                        className="border-2 border-white rounded-xl m-4 py-2 px-4"
-                    >
-                        Capture photo
-                    </button>
-                )}
-            </Webcam>
+            <div className="w-[430px] h-[932px]">
+                <Webcam
+                    audio={false}
+                    height={932}
+                    screenshotFormat="image/jpeg"
+                    width={430}
+                    videoConstraints={videoConstraints}
+                >
+                    {({ getScreenshot }) => (
+                        <button
+                            onClick={() => {
+                                upload(getScreenshot());
+                            }}
+                            className="border-2 border-white rounded-xl m-4 py-2 px-4"
+                        >
+                            Capture photo
+                        </button>
+                    )}
+                </Webcam>
+            </div>
             <h1>
                 {imageSrc ? (
                     <img src={imageSrc} alt="captured" />
