@@ -55,13 +55,18 @@ async function quoteGoose() {
     }
 }
 
-async function getName(){
-     const chatName = await cohere.chat({
-         model: "command",
-         message: "Write a fun name for a goose. Only output the name and nothing else.",
-     });
+async function getName() {
+    const chatName = await cohere.chat({
+        model: "command",
+        temperature: 0.5,
+        seed: Math.trunc(Math.random()*10000+1),
+        message:
+            "Write a fun name for a goose. Only output the name and nothing else. ",
+    });
+    if(String(chatName).length>20){
+        
+    }
 
     console.log(chatName);
     return chatName;
- };
-
+}

@@ -11,9 +11,25 @@ import Goose from "@/lib/modals/goose";
 //     },
 // };
 
-let idCounter = 0;
+//let idCounter = 0;
 
 const client = new OpenAI();
+
+import { CohereClient } from "cohere-ai";
+const cohere = new CohereClient({
+    token: "gxlx7nP2yR7pbVnsyCNhgmWkRtNJrl8HLxFZ3R4A",
+});
+
+async function getName() {
+    const chatName = await cohere.chat({
+        model: "command",
+        message:
+            "Write a fun name for a goose. Only output the name and nothing else.",
+    });
+
+    console.log(chatName);
+    return chatName;
+}
 
 const prompt = `You are an AI designed to tell the difference between Geese that have some unusual trait. Your job is to not only find that trait or traits but also describe that trait so given another image you can decipher if it is truly the right goose.`;
 
@@ -75,16 +91,17 @@ export async function POST(req: NextRequest) {
         if (parsedData.id === 0) {
             const id = await getID();
             const midterm = await getMidterm(); 
+            const funnyName = await getName();
 
             const newGooseData = {
                 id: id,
-                name: "flullk",
+                name: funnyName.text,
                 traitsPrompt: parsedData.trait,
                 views: 1,
-                finder: "Person",
+                finder: "Hacker",
                 midterm: midterm,
                 final: 0,
-                image: "something"
+                image: "https://i.imgur.com/3EdNkjH.png"
             }  
             
             const newGoose = new Goose(newGooseData);
@@ -111,8 +128,7 @@ export async function POST(req: NextRequest) {
 }
 
 async function getID() {
-    idCounter++; 
-    return idCounter; 
+    return Math.floor(Math.random() * 9999999 + 10000000); 
 } 
 
 async function getMidterm() {
