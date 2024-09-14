@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 
 const containerStyle = {
     width: "100%",
-    height: "80vh",
+    height: "100vh",
 };
 
 const center = {
@@ -61,23 +61,28 @@ export default function MyMap() {
         setMap(null);
     }, []);
 
-    return <div>
+    return (
+        <div>
+            <Navbar />
 
-        <Navbar />
-        
-        {isLoaded ? (
-        <div className="-z-10">
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={currentPosition} // Set the initial center as the current position
-                zoom={14}
-                onLoad={onLoad}
-                onUnmount={onUnmount}
-            >
-                <Marker position={currentPosition} />
-            </GoogleMap>
+            {isLoaded ? (
+                <div className="-z-10 h-[932px] w-[430px]">
+                    <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={currentPosition} // Set the initial center as the current position
+                        zoom={14}
+                        onLoad={onLoad}
+                        onUnmount={onUnmount}
+                        options={{
+                            disableDefaultUI: true,
+                        }}
+                    >
+                        <Marker position={currentPosition} />
+                    </GoogleMap>
+                </div>
+            ) : (
+                <></>
+            )}
         </div>
-    ) : (
-        <></>
-    )}</div>;
+    );
 }

@@ -27,7 +27,17 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         await connect();
-        const newGoose = new Goose(body);
+
+        const id = await getID();
+        const midterm = await getMidterm(); 
+
+        const mergedGooseData = {
+            ...body,
+            id: id,
+            midterm: midterm,
+        }
+
+        const newGoose = new Goose(mergedGooseData);
         await newGoose.save();
     
         return new NextResponse(
@@ -47,5 +57,25 @@ async function getID() {
 } 
 
 async function getMidterm() {
+    let sum = 0;
+    let result = 0;
+
+    for (let j = 0; j < 12; j++) {
+        sum += Math.random();
+    }
+
+    sum -= 6;
+
+    let p = Math.random(); 
     
+    if (p >= 0.9) {
+        result = Math.floor(sum * 5 / 6 + 95);
+    } else if (p >= 0.6) {
+        result = Math.floor(sum * 20 / 6 + 80);
+    } else {
+        result = Math.floor(sum * 50 / 6 + 50);
+    }
+
+    console.log("Midterm mark generated: " + result);
+    return(result);
 }

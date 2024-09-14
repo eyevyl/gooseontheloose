@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";
+import connect from "@/lib/db";
+import Goose from "@/lib/modals/goose";
 
 export const config = {
     api: {
@@ -8,6 +10,8 @@ export const config = {
         },
     },
 };
+
+let idCounter = 0;
 
 const client = new OpenAI();
 
@@ -25,18 +29,8 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        console.log(process.env.NEXT_PUBLIC_BASE_URL);
-        const gooseTraits = await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/api/gooseTraits`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        const traits = await gooseTraits.json();
-        console.log(traits);
+        await connect();
+        const traitPrompts = await Goose.find({}, "id traitsPrompt");
 
         const completion = await client.chat.completions.create({
             model: "gpt-4o",
@@ -44,6 +38,15 @@ export async function POST(req: NextRequest) {
                 {
                     role: "system",
                     content: prompt,
+                },
+                {
+                    role: "user",
+                    content: [
+                        {
+                            type: "text",
+                            text: "Here is a list of known gooses and their associated unique traits: " + JSON.stringify(traitPrompts),
+                        },
+                    ],
                 },
                 {
                     role: "user",
@@ -65,11 +68,38 @@ export async function POST(req: NextRequest) {
         });
 
         const rawAnswer = completion.choices[0].message.content as string;
-        console.log(rawAnswer);
+
+        const parsedData = JSON.parse(rawAnswer);
+        console.log(parsedData);
+
+        if (parsedData.id === 0) {
+            const id = await getID();
+            const midterm = await getMidterm(); 
+
+            const newGooseData = {
+                id: id,
+                name: "hello",
+                traitsPrompt: parsedData.trait,
+                views: 1,
+                finder: "Person",
+                midterm: midterm,
+                final: 0,
+                image: "something"
+            }  
+            
+            const newGoose = new Goose(newGooseData);
+            await newGoose.save();
+
+            console.log("New goose created.")
+        } else if (parsedData.id === -1) {
+            console.log("This is not a goose.")
+        } else {
+            console.log("")
+        }
 
         return NextResponse.json({
             success: true,
-            data: JSON.parse(rawAnswer),
+            data: parsedData,
         });
     } catch (error) {
         console.error(error);
@@ -78,4 +108,33 @@ export async function POST(req: NextRequest) {
             error: "AI failed to generate a response",
         });
     }
+}
+
+async function getID() {
+    idCounter++; 
+    return idCounter; 
+} 
+
+async function getMidterm() {
+    let sum = 0;
+    let result = 0;
+
+    for (let j = 0; j < 12; j++) {
+        sum += Math.random();
+    }
+
+    sum -= 6;
+
+    let p = Math.random(); 
+    
+    if (p >= 0.9) {
+        result = Math.floor(sum * 5 / 6 + 95);
+    } else if (p >= 0.6) {
+        result = Math.floor(sum * 20 / 6 + 80);
+    } else {
+        result = Math.floor(sum * 50 / 6 + 50);
+    }
+
+    console.log("Midterm mark generated: " + result);
+    return(result);
 }

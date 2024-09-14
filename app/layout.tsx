@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: "Goose on the Loose",
     description: "Capture images of gooses ",
     icons: {
-        icon: "./favicon.ico"
+        icon: "/favicon.ico"
     }
 };
 
@@ -35,7 +35,7 @@ export default function RootLayout({
                 <Navbar />
                 {children}
             </body>
-            <link rel="icon" href="/favicon.ico" sizes="any" />
+            {/* <link rel="icon" href="/favicon.ico" sizes="any" /> */}
         </html>
     );
 }

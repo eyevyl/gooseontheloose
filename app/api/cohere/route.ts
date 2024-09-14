@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
-    let response = await quoteGoose();
+    let response = await getName();
 
     console.log(response);
     console.log("response");
@@ -13,14 +13,14 @@ const cohere = new CohereClient({
     token: "gxlx7nP2yR7pbVnsyCNhgmWkRtNJrl8HLxFZ3R4A",
 });
 
-let gradeTest = 46;
+let gradeTest = 66;
 
 async function quoteGoose() {
     if (gradeTest <= 100 && gradeTest >= 80) {
         const chat = await cohere.chat({
             model: "command",
             message:
-                "Tell me a (2 sentences), motivational, epic quote from a great philosopher. Only include the quote, do not include the philosopher. Do not say anything else. JSON format. ",
+                "Tell me a (2 sentences), motivational, epic quote from a great philosopher. Only include the quote, do not include the philosopher. Do not say anything else.",
         });
 
         // console.log(chat);
@@ -29,7 +29,7 @@ async function quoteGoose() {
         const chat = await cohere.chat({
             model: "command",
             message:
-                "Tell me some sophisticated advice for studying. One sentence long. No other text.Use JSON formatting",
+                "Tell me some sophisticated advice for studying. One sentence long. No other text.",
         });
 
         console.log(chat);
@@ -38,7 +38,7 @@ async function quoteGoose() {
         const chat = await cohere.chat({
             model: "command",
             message:
-                "Tell me advice for studying. One sentence long. No other text. JSON formatting, no whitespace or new line.",
+                "You're a goose, tell me advice for studying while making goose sound effects. One sentence long. Only use the goose sentence.",
         });
 
         console.log(chat);
@@ -55,11 +55,12 @@ async function quoteGoose() {
     }
 }
 
-// const getGoose = (async () => {
-//     const chat = await cohere.chat({
-//         model: "command",
-//         message: "Write a funny and punny name for a goose",
-//     });
+async function getName(){
+     const chatName = await cohere.chat({
+         model: "command",
+         message: "Write a funny and punny name for a goose",
+     });
 
-//     console.log(chat);
-// })();
+    console.log(chatName);
+ };
+

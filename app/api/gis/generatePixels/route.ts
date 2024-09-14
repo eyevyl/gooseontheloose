@@ -2,13 +2,13 @@ import OpenAI from "openai";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-
 const client = new OpenAI();
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { trait } = body;
+        console.log(body);
 
         if (!trait) {
             return NextResponse.json(
@@ -17,12 +17,12 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const prompt = `Generate a goose pixel art image with the distinct trait of: ${trait}`;
+        const prompt = `Generate a gameish canadian goose pixel art image with the distinct trait of: ${trait} with a red ribbon`;
 
         const imageResponse = await client.images.generate({
             prompt,
             n: 1,
-            size: "256x256",
+            size: "512x512",
         });
 
         const generatedImageUrl = imageResponse.data[0].url;
@@ -49,8 +49,20 @@ export async function POST(req: NextRequest) {
 
         const imgurUrl = imgurResponse.data.data.link;
 
+        const gooseData = {
+            image: imgurUrl,
+        };
+
+        const sendGooseData = await fetch("http://localhost:3001/api/gis", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(gooseData),
+        });
+
         return NextResponse.json({ success: true, imgurUrl });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error generating image or uploading to Imgur:", error);
         return NextResponse.json(
             { success: false, error: error.message },

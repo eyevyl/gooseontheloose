@@ -2,20 +2,20 @@ import { Schema, model, models } from "mongoose";
 
 const GooseSchema = new Schema(
     {
-        id: { type: Number, required: true, unique: true },
-        name: { type: "string", required: true, unique: true },
-        image: { type: "string", required: true },
-        traitsPrompt: { type: "string", required: true, unique: true },
-        views: { type: Number, required: true },
-        finder: { type: "string", required: true },
-        midterm: { type: Number, required: true },
-        final: { type: Number, required: true },
+        id: { type: Number},
+        name: { type: "string"},
+        image: { type: "string"},
+        traitsPrompt: { type: "string"},
+        views: { type: Number},
+        finder: { type: "string"},
+        midterm: { type: Number},
+        final: { type: Number},
     },
     {
         timestamps: true,
     },
 );
 
-const Goose = models.Goose || model("Goose", GooseSchema);
+const Goose = models?.Goose || model("Goose", GooseSchema);
 
 export default Goose;

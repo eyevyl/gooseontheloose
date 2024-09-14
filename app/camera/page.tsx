@@ -4,7 +4,6 @@ import type { NextPage } from "next";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Webcam from "react-webcam";
-import { FaCamera } from "react-icons/fa6";
 
 const videoConstraints = {
     width: 430,
@@ -20,7 +19,7 @@ type ErrorResponse = {
 type SuccessResponse = {
     success: true;
     id: number;
-    result: string;
+    data: string;
 };
 
 const Page: NextPage = () => {
@@ -37,8 +36,9 @@ const Page: NextPage = () => {
                 base64: encodeURIComponent(thing),
             }),
         });
+        const json: SuccessResponse | ErrorResponse = await res.json();
+        const data = json.data;
 
-        const data: SuccessResponse | ErrorResponse = await res.json();
 
         if ("error" in data) {
             console.error(data.error);
@@ -47,10 +47,22 @@ const Page: NextPage = () => {
         }
         // Goose identified
 
-        if (false) {
 
+        if (data.id == -1) {
+            // not a goose
         }
-        
+        console.log(data);
+        console.log(data.trait);
+        if (data.id != 0 || true) {
+            const res = await fetch(`/api/gis/generatePixels`, {
+                method: "POST",
+                body: JSON.stringify({
+                    trait: data.trait,
+                }),
+            });
+            const json = await res.json();
+            console.log(json);
+        }
 
         setProcessing(false);
     }
@@ -66,14 +78,16 @@ const Page: NextPage = () => {
                     videoConstraints={videoConstraints}
                 >
                     {({ getScreenshot }) => (
+                        <div className="absolute bottom-20 w-[430px] p-4 flex items-center justify-center">
+
                         <button
                             onClick={() => {
                                 upload(getScreenshot());
                             }}
-                            className="border-2 rounded-full p-2 scale-150 bottom-10 absolute left-[47vw] z-50"
+                            className="border-4 rounded-full p-8 z-50"
                         >
-                            <FaCamera className="text-white"/>
                         </button>
+                        </div>
                     )}
                 </Webcam>
             </div>
