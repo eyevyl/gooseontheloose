@@ -11,6 +11,11 @@ export async function POST(req: NextRequest) {
         await connect(); 
 
         const newSighting = new Sighting(body); 
+        await newSighting.save();
+
+        return new NextResponse(
+            JSON.stringify({ message: "New sighting added.", })
+        )
     } catch {
 
     }

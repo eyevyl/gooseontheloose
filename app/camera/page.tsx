@@ -19,7 +19,10 @@ type ErrorResponse = {
 type SuccessResponse = {
     success: true;
     id: number;
-    data: string;
+    data: {
+        id: number;
+        trait: string;
+    };
 };
 
 const Page: NextPage = () => {
@@ -37,13 +40,14 @@ const Page: NextPage = () => {
             }),
         });
         const json: SuccessResponse | ErrorResponse = await res.json();
-        const data = json.data;
+        
 
-        if ("error" in data) {
-            console.error(data.error);
+        if ("error" in json) {
+            console.error(json.error);
             setProcessing(false);
             return;
         }
+        const data = json.data;
         // Goose identified
 
         if (data.id == -1) {

@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/db";
 import Goose from "@/lib/modals/goose";
 
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: "4mb",
-        },
-    },
-};
+// export const config = {
+//     api: {
+//         bodyParser: {
+//             sizeLimit: "4mb",
+//         },
+//     },
+// };
 
 let idCounter = 0;
 

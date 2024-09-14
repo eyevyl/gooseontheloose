@@ -11,6 +11,10 @@ async function getGoose() {
     return json;
 }
 
+function GooseProfile() {
+    
+}
+
 export default function Collection() {
     const [geese, setGeese] = useState<any[]>([]);
 
