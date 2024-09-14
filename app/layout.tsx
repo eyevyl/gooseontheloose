@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -16,6 +17,9 @@ const geistMono = localFont({
 export const metadata: Metadata = {
     title: "Goose on the Loose",
     description: "Capture images of gooses ",
+    icons: {
+        icon: "./favicon.ico"
+    }
 };
 
 export default function RootLayout({
@@ -26,10 +30,12 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
             >
+                <Navbar />
                 {children}
             </body>
+            <link rel="icon" href="/favicon.ico" sizes="any" />
         </html>
     );
 }

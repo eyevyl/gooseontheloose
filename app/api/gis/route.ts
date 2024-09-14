@@ -21,10 +21,22 @@ export async function POST(req: NextRequest) {
         if (!b64) {
             return NextResponse.json({
                 success: false,
-                failedReason: "No image data provided",
-                answer: "",
+                error: "No image data provided",
             });
         }
+
+        console.log(process.env.NEXT_PUBLIC_BASE_URL);
+        const gooseTraits = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/gooseTraits`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const traits = await gooseTraits.json();
+        console.log(traits);
 
         const completion = await client.chat.completions.create({
             model: "gpt-4o",
@@ -38,7 +50,7 @@ export async function POST(req: NextRequest) {
                     content: [
                         {
                             type: "text",
-                            text: "Describe the unique trait of the goose you see, which id is this goose. Return this in a json format in the form of {id: 1, trait: 'trait'} with no other text or ```json. Some gooses may be real images, some may be plushies, some may be lego, but still define a trait, unless you wanna say it's made of lego.",
+                            text: 'Describe the unique trait of the goose you see, and what ID it is, return an ID of 0 if this goose is new. Return this in a json format in the form of {"id": int, trait: "trait"} with no other text or ```json. Some gooses may be real images, some may be plushies, some may be lego, but still define a trait. If the object or image is clearly not a goose return an id of -1.',
                         },
                         {
                             type: "image_url",
@@ -53,14 +65,17 @@ export async function POST(req: NextRequest) {
         });
 
         const rawAnswer = completion.choices[0].message.content as string;
+        console.log(rawAnswer);
 
-        return NextResponse.json({ success: true, message: rawAnswer });
+        return NextResponse.json({
+            success: true,
+            data: JSON.parse(rawAnswer),
+        });
     } catch (error) {
         console.error(error);
         return NextResponse.json({
             success: false,
-            failedReason: "AI failed to generate a response",
-            answer: "",
+            error: "AI failed to generate a response",
         });
     }
 }

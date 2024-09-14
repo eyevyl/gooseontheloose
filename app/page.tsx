@@ -45,7 +45,7 @@ export default function MyMap() {
                     enableHighAccuracy: true,
                     timeout: 5000,
                     maximumAge: 0,
-                },
+                }
             );
 
             return () => navigator.geolocation.clearWatch(watchId); // Clean up
@@ -61,17 +61,23 @@ export default function MyMap() {
         setMap(null);
     }, []);
 
-    return isLoaded ? (
-        <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={currentPosition} // Set the initial center as the current position
-            zoom={14}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
-        >
-            <Marker position={currentPosition} />
-        </GoogleMap>
+    return <div>
+
+        <Navbar />
+        
+        {isLoaded ? (
+        <div className="-z-10">
+            <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={currentPosition} // Set the initial center as the current position
+                zoom={14}
+                onLoad={onLoad}
+                onUnmount={onUnmount}
+            >
+                <Marker position={currentPosition} />
+            </GoogleMap>
+        </div>
     ) : (
         <></>
-    );
+    )}</div>;
 }
