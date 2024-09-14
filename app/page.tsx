@@ -1,9 +1,9 @@
-import Image from "next/image";
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
 export default function Home() {
-  return (
-    <div>
-      
-    </div>
-  );
+    return (
+        <div>
+            
+        </div>
+    );
 }
