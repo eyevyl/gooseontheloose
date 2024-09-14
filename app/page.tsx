@@ -80,7 +80,7 @@ export default function Map() {
                         mapContainerStyle={containerStyle}
                         // Only use the initial center and don't change it on subsequent updates
                         center={defaultCenter}
-                        zoom={14}
+                        zoom={8}
                         onLoad={onLoad}
                         onUnmount={onUnmount}
                         options={{

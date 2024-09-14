@@ -16,6 +16,9 @@ function GooseProfile(goose: any) {
     return (
         <div>
             <RxCross2 />
+            <img src={goose.image} alt={`${goose.name} sprite`} />
+            <h1>{goose.name}</h1>
+            
         </div>
     );
 }
