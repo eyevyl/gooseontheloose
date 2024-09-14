@@ -1,52 +1,72 @@
 "use client";
 
-import { useState, useCallback, memo } from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { useState, useCallback, useEffect } from "react";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
-    width: "400px",
-    height: "400px",
+  width: '100%',
+  height: '80vh',
 };
 
 const center = {
-    lat: -3.745,
-    lng: -38.523,
+  lat: 0, // Default latitude
+  lng: 0, // Default longitude
 };
 
-function MyComponent() {
-    const { isLoaded } = useJsApiLoader({
-        id: "google-map-script",
-        googleMapsApiKey: process.env.MAPKEY as string,
-    });
+export default function MyMap() {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_MAPKEY as string,
+  });
 
-    const [map, setMap] = useState(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
 
-    const onLoad = useCallback(function callback(map: any) {
-        // This is just an example of getting and using the map instance!!! don't just blindly copy!
-        const bounds = new window.google.maps.LatLngBounds(center);
-        map.fitBounds(bounds);
+  // Function to update the user's location
+  const updatePosition = (position: GeolocationPosition) => {
+    const { latitude, longitude } = position.coords;
+    setCurrentPosition({ lat: latitude, lng: longitude });
+    
+    if (map) {
+      map.panTo({ lat: latitude, lng: longitude });
+    }
+  };
 
-        setMap(map);
-    }, []);
+  // Start watching the user's location in real-time
+  useEffect(() => {
+    if (navigator.geolocation) {
+      const watchId = navigator.geolocation.watchPosition(updatePosition, (error) => {
+        console.error("Error watching position:", error);
+      }, {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      });
 
-    const onUnmount = useCallback(function callback(map: any) {
-        setMap(null);
-    }, []);
+      return () => navigator.geolocation.clearWatch(watchId); // Clean up
+    }
+  }, [map]);
 
-    return isLoaded ? (
-        <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={10}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
-        >
-            {/* Child components, such as markers, info windows, etc. */}
-            <></>
-        </GoogleMap>
-    ) : (
-        <></>
-    );
+  // Load map and set bounds based on the user's current location
+  const onLoad = useCallback((map: google.maps.Map) => {
+    setMap(map);
+  }, []);
+
+  const onUnmount = useCallback(() => {
+    setMap(null);
+  }, []);
+
+  return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={currentPosition}  // Set the initial center as the current position
+      zoom={14}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+    >
+      <Marker position={currentPosition} />
+    </GoogleMap>
+  ) : (
+    <></>
+  );
 }
-
-export default memo(MyComponent);
