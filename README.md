@@ -1,3 +1,3 @@
 # Goose on the Loose
 
-Hackathon 2024 Submission
+Hack the North 2024 Submission
