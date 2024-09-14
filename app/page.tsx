@@ -21,7 +21,7 @@ export default function Map() {
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAPKEY as string,
     });
 
-    const [map, setMap] = useState(null)
+    const [map, setMap] = useState(null);
     const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
     const [initialCenter, setInitialCenter] = useState(defaultCenter); // Map's initial center
     const [gotInitialPosition, setGotInitialPosition] = useState(false);
@@ -41,16 +41,15 @@ export default function Map() {
     };
 
     const onLoad = useCallback(function callback(map: any) {
-        // This is just an example of getting and using the map instance!!! don't just blindly copy!
         const bounds = new window.google.maps.LatLngBounds(defaultCenter);
         map.fitBounds(bounds);
-    
-        setMap(map)
-      }, [])
-    
-      const onUnmount = useCallback(function callback(map: any) {
-        setMap(null)
-      }, [])
+
+        setMap(map);
+    }, []);
+
+    const onUnmount = useCallback(function callback(map: any) {
+        setMap(null);
+    }, []);
 
     // Watch the user's location in real-time, but do not move the map center after the first position
     useEffect(() => {
@@ -71,7 +70,6 @@ export default function Map() {
         }
     }, []);
 
-
     return (
         <div>
             <Navbar />
@@ -81,7 +79,7 @@ export default function Map() {
                     <GoogleMap
                         mapContainerStyle={containerStyle}
                         // Only use the initial center and don't change it on subsequent updates
-                        center={defaultCenter} 
+                        center={defaultCenter}
                         zoom={14}
                         onLoad={onLoad}
                         onUnmount={onUnmount}
@@ -90,7 +88,13 @@ export default function Map() {
                         }}
                     >
                         {/* The marker follows the user's current position */}
-                        <Marker position={currentPosition} />
+                        <Marker
+                            position={currentPosition}
+                            icon={{
+                                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                                scaledSize: new google.maps.Size(40, 40), // Scale the icon if needed
+                            }}
+                        />
                     </GoogleMap>
                 </div>
             ) : (

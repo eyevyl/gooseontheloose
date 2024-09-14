@@ -62,5 +62,6 @@ async function getName(){
      });
 
     console.log(chatName);
+    return chatName;
  };
 

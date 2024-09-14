@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         await connect(); 
 
-        const newSighting = new; 
+        const newSighting = new Sighting(body); 
     } catch {
 
     }
