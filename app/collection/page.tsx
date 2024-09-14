@@ -72,7 +72,7 @@ export default function Collection() {
                     >
                         <img
                             src={goose.image}
-                            className="rounded-xl mx-auto"
+                            className="rounded-xl mr-auto ml-2"
                             height="120px"
                             width="120px"
                             alt={`${goose.name} sprite`}
