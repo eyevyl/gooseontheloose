@@ -81,11 +81,12 @@ const Page: NextPage = () => {
                     width={430}
                     videoConstraints={videoConstraints}
                 >
+                    {/* @ts-ignore */}
                     {({ getScreenshot }) => (
                         <div className="absolute bottom-20 w-[430px] p-4 flex items-center justify-center">
                             <button
                                 onClick={() => {
-                                    upload(getScreenshot());
+                                    upload(getScreenshot() as string);
                                 }}
                                 className="border-4 rounded-full p-8 z-50"
                             ></button>

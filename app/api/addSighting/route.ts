@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         await newSighting.save();
 
         return new NextResponse(
-            JSON.stringify({ message: "New sighting added.", })
+            JSON.stringify({ message: "New sighting added.", sighting: newSighting })
         )
     } catch {
 

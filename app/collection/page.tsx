@@ -11,8 +11,12 @@ async function getGoose() {
     return json;
 }
 
-function GooseProfile() {
-    
+function GooseProfile(goose: any) {
+    return (
+        <div>
+            
+        </div>
+    );
 }
 
 export default function Collection() {
