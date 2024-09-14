@@ -16,3 +16,11 @@ export async function GET(req: NextRequest) {
         return NextResponse.json("Error in fetching geese" + error.message, {status: 500,});
     }
 }
+
+export async function POST(req: NextRequest) {
+    try {
+        
+    } catch (error: any) {
+
+    }
+}

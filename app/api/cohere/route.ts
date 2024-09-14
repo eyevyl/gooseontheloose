@@ -13,13 +13,13 @@ const cohere = new CohereClient({
     token: "gxlx7nP2yR7pbVnsyCNhgmWkRtNJrl8HLxFZ3R4A",
 });
 
-let gradeTest = 6;
+let gradeTest = 46;
 
 async function quoteGoose() {
    if(gradeTest<=100&&gradeTest>=80){
     const chat = await cohere.chat({
         model: "command",
-        message: "Tell me a (2 sentences), motivational, epic quote from a great philosopher. Only include the quote, do not include the philosopher. Do not say anything else. JSON format.",
+        message: "Tell me a (2 sentences), motivational, epic quote from a great philosopher. Only include the quote, do not include the philosopher. Do not say anything else. JSON format. ",
     });
     
     // console.log(chat);
@@ -29,33 +29,31 @@ async function quoteGoose() {
 else if(gradeTest>=60){
     const chat = await cohere.chat({
         model: "command",
-        message: "Tell me some sophisticated advice for studying. Use long words. One sentence long. JSON format.",
+        message: "Tell me some sophisticated advice for studying. One sentence long. No other text.Use JSON formatting",
     });
    
     console.log(chat);
     return chat;
-});
 }
 else if(gradeTest>=40){
-    (async () => {
+
         const chat = await cohere.chat({
             model: "command",
-            message: "Tell me some advice for studying. One sentence long.",
+            message: "Tell me advice for studying. One sentence long. No other text. JSON formatting, no whitespace or new line.",
         });
        
         console.log(chat);
-    })();
+        return chat;
 }
 
 else if(gradeTest<40){
-   (async () => {
         const chat = await cohere.chat({
             model: "command",
             message: "Pretend you have the vocabulary of a 3 year old. Write a short (2 to 4 words) encouraging sentence for studying.",
         });
        
         console.log(chat);
-    })();
+        return chat;
 }
 }
 

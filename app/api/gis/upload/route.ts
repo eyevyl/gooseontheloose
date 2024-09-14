@@ -11,23 +11,22 @@ export const config = {
 
 const client = new OpenAI();
 
-const prompt = `You are an assistant that will generate a description of stuff you see`;
+const prompt = `You are an AI designed to tell the difference between Geese that have some unusual trait. Your job is to not only find that trait or traits but also describe that trait so given another image you can decipher if it is truly the right goose.`;
 
 export async function POST(req: NextRequest) {
-    const rawB64 = (await req.json()).base64;
-    const b64 = decodeURIComponent(rawB64 as string);
-    
+    try {
+        const rawB64 = (await req.json()).base64;
+        const b64 = decodeURIComponent(rawB64 as string);
 
-    if (b64 === undefined) {
-        return NextResponse.json({
-            success: false,
-            failedReason: "No image data provided",
-            answer: "",
-        });
-    }
+        if (!b64) {
+            return NextResponse.json({
+                success: false,
+                failedReason: "No image data provided",
+                answer: "",
+            });
+        }
 
-    client.chat.completions
-        .create({
+        const completion = await client.chat.completions.create({
             model: "gpt-4o",
             messages: [
                 {
@@ -39,7 +38,7 @@ export async function POST(req: NextRequest) {
                     content: [
                         {
                             type: "text",
-                            text: "Describe the text you see.",
+                            text: "Describe the unique trait of the goose you see, which id is this goose. Return this in a json format in the form of {id: 1, trait: 'trait'} with no other text or ```json. Some gooses may be real images, some may be plushies, some may be lego, but still define a trait, unless you wanna say it's made of lego.",
                         },
                         {
                             type: "image_url",
@@ -51,23 +50,18 @@ export async function POST(req: NextRequest) {
                 },
             ],
             max_tokens: 1000,
-        })
-        .then((completion) => {
-            const rawAnswer = completion.choices[0].message.content as string;
-
-            console.log(rawAnswer);
-            return NextResponse.json({ message: `${rawAnswer}!` });
-        })
-        .catch((reason) => {
-            console.error(reason);
-            return NextResponse.json({
-                success: false,
-                failedReason: "AI failed to generate a response",
-                answer: "",
-            });
         });
+
+        const rawAnswer = completion.choices[0].message.content as string;
+
+        return NextResponse.json({ success: true, message: rawAnswer });
+
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({
+            success: false,
+            failedReason: "AI failed to generate a response",
+            answer: "",
+        });
+    }
 }
-
-// return NextResponse.json({ alive: true });
-
-// https://localhost:3000/api/gis/upload
