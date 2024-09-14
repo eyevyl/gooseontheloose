@@ -55,7 +55,6 @@ export async function POST(req: NextRequest) {
         const rawAnswer = completion.choices[0].message.content as string;
 
         return NextResponse.json({ success: true, message: rawAnswer });
-
     } catch (error) {
         console.error(error);
         return NextResponse.json({

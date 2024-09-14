@@ -11,16 +11,15 @@ export async function GET(req: NextRequest) {
     try {
         await connect();
         const geese = await Goose.find();
-        return new NextResponse(JSON.stringify(geese), {status: 200}); 
+        return new NextResponse(JSON.stringify(geese), { status: 200 });
     } catch (error: any) {
-        return NextResponse.json("Error in fetching geese" + error.message, {status: 500,});
+        return NextResponse.json("Error in fetching geese" + error.message, {
+            status: 500,
+        });
     }
 }
 
 export async function POST(req: NextRequest) {
     try {
-        
-    } catch (error: any) {
-
-    }
+    } catch (error: any) {}
 }

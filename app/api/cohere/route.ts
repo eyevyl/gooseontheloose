@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
     let response = await quoteGoose();
-    
+
     console.log(response);
     console.log("response");
 
@@ -16,45 +16,43 @@ const cohere = new CohereClient({
 let gradeTest = 46;
 
 async function quoteGoose() {
-   if(gradeTest<=100&&gradeTest>=80){
-    const chat = await cohere.chat({
-        model: "command",
-        message: "Tell me a (2 sentences), motivational, epic quote from a great philosopher. Only include the quote, do not include the philosopher. Do not say anything else. JSON format. ",
-    });
-    
-    // console.log(chat);
-    return chat;
-}
-
-else if(gradeTest>=60){
-    const chat = await cohere.chat({
-        model: "command",
-        message: "Tell me some sophisticated advice for studying. One sentence long. No other text.Use JSON formatting",
-    });
-   
-    console.log(chat);
-    return chat;
-}
-else if(gradeTest>=40){
-
+    if (gradeTest <= 100 && gradeTest >= 80) {
         const chat = await cohere.chat({
             model: "command",
-            message: "Tell me advice for studying. One sentence long. No other text. JSON formatting, no whitespace or new line.",
+            message:
+                "Tell me a (2 sentences), motivational, epic quote from a great philosopher. Only include the quote, do not include the philosopher. Do not say anything else. JSON format. ",
         });
-       
-        console.log(chat);
-        return chat;
-}
 
-else if(gradeTest<40){
+        // console.log(chat);
+        return chat;
+    } else if (gradeTest >= 60) {
         const chat = await cohere.chat({
             model: "command",
-            message: "Pretend you have the vocabulary of a 3 year old. Write a short (2 to 4 words) encouraging sentence for studying.",
+            message:
+                "Tell me some sophisticated advice for studying. One sentence long. No other text.Use JSON formatting",
         });
-       
+
         console.log(chat);
         return chat;
-}
+    } else if (gradeTest >= 40) {
+        const chat = await cohere.chat({
+            model: "command",
+            message:
+                "Tell me advice for studying. One sentence long. No other text. JSON formatting, no whitespace or new line.",
+        });
+
+        console.log(chat);
+        return chat;
+    } else if (gradeTest < 40) {
+        const chat = await cohere.chat({
+            model: "command",
+            message:
+                "Pretend you have the vocabulary of a 3 year old. Write a short (2 to 4 words) encouraging sentence for studying.",
+        });
+
+        console.log(chat);
+        return chat;
+    }
 }
 
 // const getGoose = (async () => {
@@ -62,6 +60,6 @@ else if(gradeTest<40){
 //         model: "command",
 //         message: "Write a funny and punny name for a goose",
 //     });
-    
+
 //     console.log(chat);
 // })();

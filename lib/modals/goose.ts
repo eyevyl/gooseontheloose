@@ -13,7 +13,7 @@ const GooseSchema = new Schema(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
 const Goose = models.Goose || model("Goose", GooseSchema);
