@@ -91,6 +91,15 @@ const Page: NextPage = () => {
             });
             const json = await res.json();
             console.log(json);
+            const otherRes = await fetch(`/api/getGoose`, {
+                method: "GET",
+            });
+            const existingData = await otherRes.json();
+            const actualGoose: GooseSchema = existingData.find(
+                (goose: GooseSchema) => goose.traitsPrompt === data.trait
+            );
+            setRealGoose(actualGoose);
+            setShowCard(true);
         } else {
             // Existing Goose
             const res = await fetch(`/api/getGoose`, {
