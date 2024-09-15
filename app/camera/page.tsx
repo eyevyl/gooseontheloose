@@ -43,7 +43,7 @@ const Page: NextPage = () => {
                 >
                     {/* @ts-ignore */}
                     {({ getScreenshot }) => (
-                        <div className="absolute bottom-20 w-full p-4 flex items-center justify-center z-20"> {/* Move the shutter button up from the bottom */}
+                        <div className="absolute bottom-30 w-full p-4 flex items-center justify-center z-20"> {/* Move the shutter button up from the bottom */}
                             <button
                                 onClick={() => {
                                     const screenshot = getScreenshot();
