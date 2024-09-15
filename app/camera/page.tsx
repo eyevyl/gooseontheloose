@@ -1,34 +1,14 @@
 "use client";
 
 import type { NextPage } from "next";
-import { motion } from "framer-motion";
 import { useState } from "react";
 import Webcam from "react-webcam";
 
 const videoConstraints = {
-    width: 430,
-    height: 932,
-    facingMode: ["environment", "user"],
-};
-
-type ErrorResponse = {
-    error: string;
-    success: boolean;
-};
-
-type SuccessResponse = {
-    success: true;
-    id: number;
-    data: {
-        id: number;
-        trait: string;
-    };
+    facingMode: "environment", // Use rear camera by default
 };
 
 const Page: NextPage = () => {
-    const [processing, setProcessing] = useState(false);
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
-    const [result, setResult] = useState<string | null>(null);
     const [isClicked, setIsClicked] = useState(false);
 
     const handleClick = () => {
@@ -37,7 +17,7 @@ const Page: NextPage = () => {
     };
 
     async function upload(thing: string) {
-        setProcessing(true);
+        console.log("Uploading screenshot...");
 
         const res = await fetch(`/api/gis`, {
             method: "POST",
@@ -45,58 +25,34 @@ const Page: NextPage = () => {
                 base64: encodeURIComponent(thing),
             }),
         });
-        const json: SuccessResponse | ErrorResponse = await res.json();
+        const json = await res.json();
 
-        if ("error" in json) {
-            console.error(json.error);
-            setProcessing(false);
-            return;
-        }
-        const data = json.data;
-        // Goose identified
-
-        if (data.id == -1) {
-            // not a goose
-        }
-        console.log(data);
-        console.log(data.trait);
-        console.log(data.id);
-        if (data.id == 0) {
-            const res = await fetch(`/api/gis/generatePixels`, {
-                method: "POST",
-                body: JSON.stringify({
-                    trait: data.trait,
-                    id: data.id,
-                }),
-            });
-            const json = await res.json();
-            console.log(json);
-        }
-
-        setProcessing(false);
+        console.log("Response from API:", json);
     }
 
     return (
         <>
-            <div className="w-[430px] h-[932px] overscroll-none">
-                <div className="absolute w-[430px] bg-black opacity-50 h-12"></div>
-
+            {/* Full screen container for webcam */}
+            <div className="w-full h-screen relative bg-black">
+                {/* Webcam component should touch the top of the screen */}
                 <Webcam
                     audio={false}
-                    height={932}
                     screenshotFormat="image/jpeg"
-                    width={430}
                     videoConstraints={videoConstraints}
+                    className="absolute top-0 w-full h-full object-cover" // Ensures the webcam fills the screen and touches the top
                 >
                     {/* @ts-ignore */}
                     {({ getScreenshot }) => (
-                        <div className="absolute bottom-0 pb-28 w-[430px] p-4 flex items-center justify-center bg-black opacity-50">
+                        <div className="absolute bottom-40 w-full p-4 flex items-center justify-center z-20"> {/* Move the shutter button up from the bottom */}
                             <button
                                 onClick={() => {
-                                    upload(getScreenshot() as string);
-                                    handleClick();
+                                    const screenshot = getScreenshot();
+                                    if (screenshot) {
+                                        upload(screenshot);
+                                        handleClick();
+                                    }
                                 }}
-                                className={`border-4 bg-transparent rounded-full p-8 z-50 transition-transform duration-200 ${
+                                className={`border-4 bg-transparent rounded-full p-8 transition-transform duration-200 ${
                                     isClicked ? "animate-click" : ""
                                 }`}
                             ></button>
@@ -104,14 +60,12 @@ const Page: NextPage = () => {
                     )}
                 </Webcam>
             </div>
+
+            {/* Click animation overlay */}
             {isClicked && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute top-0 left-0 w-full h-full bg-black flex items-center justify-center"
-                ></motion.div>
+                <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-30 flex items-center justify-center">
+                    <p className="text-white">Processing...</p>
+                </div>
             )}
         </>
     );
