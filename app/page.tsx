@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import Navbar from "../components/Navbar";
+import { GET } from "./api/fetchSighting/route";
 
 const containerStyle = {
     width: "100%",
@@ -54,6 +55,7 @@ export default function Map() {
     // Watch the user's location in real-time, but do not move the map center after the first position
     useEffect(() => {
         if (navigator.geolocation) {
+            getSightings();
             const watchId = navigator.geolocation.watchPosition(
                 updatePosition,
                 (error) => {
@@ -69,6 +71,26 @@ export default function Map() {
             return () => navigator.geolocation.clearWatch(watchId); // Clean up watcher on unmount
         }
     }, []);
+
+    async function getSightings() {
+        try {
+            const response = await fetch(`/api/fetchSighting`, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            const data = await response.json();
+            console.log(data);
+            return data;
+        }
+        catch (error) {
+            console.error("Failed to fetch sightings:", error);
+        }
+        
+    }
 
     return (
         <div>
@@ -92,7 +114,7 @@ export default function Map() {
                             position={currentPosition}
                             icon={{
                                 url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                                scaledSize: new google.maps.Size(40, 40), // Scale the icon if needed
+                                scaledSize: new google.maps.Size(40, 40),
                             }}
                         />
                     </GoogleMap>

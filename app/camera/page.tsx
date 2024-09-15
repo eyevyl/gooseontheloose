@@ -29,6 +29,12 @@ const Page: NextPage = () => {
     const [processing, setProcessing] = useState(false);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [result, setResult] = useState<string | null>(null);
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleClick = () => {
+        setIsClicked(true);
+        setTimeout(() => setIsClicked(false), 1000);
+    };
 
     async function upload(thing: string) {
         setProcessing(true);
@@ -73,6 +79,8 @@ const Page: NextPage = () => {
     return (
         <>
             <div className="w-[430px] h-[932px] overscroll-none">
+                <div className="absolute w-[430px] bg-black opacity-50 h-12">
+                </div>
                 <Webcam
                     audio={false}
                     height={932}
@@ -82,17 +90,29 @@ const Page: NextPage = () => {
                 >
                     {/* @ts-ignore */}
                     {({ getScreenshot }) => (
-                        <div className="absolute bottom-20 w-[430px] p-4 flex items-center justify-center">
+                        <div className="absolute bottom-0 pb-20 w-[430px] p-4 flex items-center justify-center bg-black opacity-50">
                             <button
                                 onClick={() => {
                                     upload(getScreenshot() as string);
+                                    handleClick();
                                 }}
-                                className="border-4 rounded-full p-8 z-50"
+                                className={`border-4 bg-transparent rounded-full p-8 z-50 transition-transform duration-200 ${
+                                    isClicked ? "animate-click" : ""
+                                }`}
                             ></button>
                         </div>
                     )}
                 </Webcam>
             </div>
+            {isClicked && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute top-0 left-0 w-full h-full bg-black flex items-center justify-center"
+                ></motion.div>
+            )}
         </>
     );
 };
