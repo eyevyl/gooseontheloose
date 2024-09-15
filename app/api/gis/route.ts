@@ -112,13 +112,10 @@ export async function POST(req: NextRequest) {
             console.log("This is not a goose.")
         } else {
             console.log("This goose has been found before.");
-            const goose = await Goose.findOne({ traitsPrompt : parsedData.trait});
+            
+            
 
-            const views = goose.views+1; 
-
-            const gooseData = {
-                views: views,
-            }
+            
         }
 
         return NextResponse.json({
