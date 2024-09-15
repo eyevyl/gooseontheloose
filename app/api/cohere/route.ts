@@ -4,7 +4,7 @@ export async function GET() {
     console.log(response);
     console.log("response");
 
-    return NextResponse.json({ message: response.text});
+    return NextResponse.json({ message: response?.text});
 }
 
 import { CohereClient } from "cohere-ai";
