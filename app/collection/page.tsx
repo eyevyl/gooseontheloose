@@ -5,6 +5,7 @@ import { RxCross2 } from "react-icons/rx";
 import { GiGoose } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
 import Faculty from "@/components/Faculty";
+import Wadcard from "@/components/Wadcard";
 
 const container = {
     hidden: { opacity: 1, scale: 0 },
@@ -114,65 +115,7 @@ export default function Collection() {
                                         <RxCross2 className="text-gray-500 hover:text-red-600 text-3xl" />
                                     </button>
 
-                                    <div className="relative w-full h-full bg-white border border-gray-300 rounded-lg flex flex-col">
-                                        <div className="flex justify-start items-center px-4 py-2 bg-blue-900 text-white rounded-t-lg">
-                                            <GiGoose className="text-4xl mr-2 z-50" />
-                                            <span className="text-lg font-bold text-purple-300">
-                                                WAD
-                                            </span>
-                                            <span className="text-lg font-bold">
-                                                CARD
-                                            </span>
-                                        </div>
-
-                                        <div className="flex flex-row items-start px-4 py-4 space-x-4">
-                                            <div className="flex flex-col items-center">
-                                                {/* Goose Image */}
-                                                <div className="rounded-full border border-gray-300">
-                                                    <img
-                                                        src={displayGoose.image}
-                                                        alt={`${displayGoose.name} sprite`}
-                                                        className="w-24 h-24 object-cover p-4"
-                                                    />
-                                                </div>
-                                                <p className="text-black text-center mt-2">
-                                                    University of Waddleloo
-                                                </p>
-                                                <Faculty program="Science" />
-                                            </div>
-
-                                            {/* Goose Info */}
-                                            <div className="flex flex-col justify-between h-full">
-                                                <h2 className="text-2xl font-semibold text-gray-900 text-center">
-                                                    {displayGoose.name}
-                                                </h2>
-                                                {/* Midterm Grade */}
-                                                <p
-                                                    className="text-2xl font-bold text-center"
-                                                    style={{
-                                                        color: getColor(
-                                                            displayGoose.midterm
-                                                        ),
-                                                    }}
-                                                >
-                                                    Midterm: {displayGoose.midterm}
-                                                </p>
-                                                <p className="text-2xl font-bold text-center" style={{
-                                                    color: getColor(displayGoose.final)
-                                                }}>
-                                                    Final: {displayGoose.final}
-                                                    
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {/* Barcode Strip for Design */}
-                                        <div className="mt-auto bg-gray-800 h-8 w-full rounded-b-lg flex items-center justify-center">
-                                            <div className="w-40 h-4 bg-gray-400 rounded-sm items-center flex justify-center text-sm">
-                                                Undergraduate
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Wadcard goose={displayGoose} />
                                 </motion.div>
                             </motion.div>
                         )}
@@ -211,6 +154,9 @@ export default function Collection() {
                                         <h1 className="text-lg font-medium text-black">
                                             {goose.traitsPrompt}
                                         </h1>
+                                        <div className="mt-2">
+                                            <Faculty program={goose.program} />
+                                        </div>
                                     </div>
                                 </motion.div>
                             ))}
