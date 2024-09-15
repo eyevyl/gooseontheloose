@@ -121,9 +121,9 @@ export default function Collection() {
                         )}
                     </AnimatePresence>
                     <h1
-                        className={`text-4xl font-bold text-indigo-700 m-2 mx-0`}
+                        className={`text-5xl font-black text-indigo-700 mt-2`}
                     >
-                        Goose Collection
+                        Geese
                     </h1>
 
                     {/* Collection of Geese */}
@@ -170,7 +170,7 @@ export default function Collection() {
                                     +
                                 </div>
                                 <h1 className="text-xl font-bold text-indigo-700">
-                                    Add to your collection!
+                                    Add Goose
                                 </h1>
                             </motion.a>
                         </motion.div>
