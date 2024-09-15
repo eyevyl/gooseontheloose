@@ -16,8 +16,14 @@ const Navbar = () => {
                 whileTap={{ y: 1 }}
                 className="cursor-pointer"
             >
-                <div className="bg-cyan-400 duration-300 ease-in-out hover:bg-cyan-500 rounded-full p-3 shadow-lg">
-                    <FaHome className="text-white text-3xl" />
+                <div className="duration-300 ease-in-out rounded-full p-3 shadow-lg border border-black"
+                style={{
+                    backgroundImage: 'url("/assets/iconbkg.jpg")',
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+                >
+                    <FaHome className="text-black text-3xl" />
                 </div>
             </motion.a>
             <motion.a
@@ -28,8 +34,14 @@ const Navbar = () => {
                 whileTap={{ y: 1 }}
                 className="cursor-pointer"
             >
-                <div className=" bg-cyan-400 duration-300 ease-in-out hover:bg-cyan-500 rounded-full p-3 shadow-lg">
-                    <FaCamera className="text-white text-3xl" />
+                <div className="duration-300 ease-in-out rounded-full p-3 shadow-lg border border-black"
+                    style={{
+                        backgroundImage: 'url("/assets/iconbkg.jpg")',
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                    }}
+                >
+                    <FaCamera className="text-black text-3xl" />
                 </div>
             </motion.a>
             <motion.a
@@ -40,8 +52,14 @@ const Navbar = () => {
                 whileTap={{ y: 1 }}
                 className="cursor-pointer"
             >
-                <div className=" bg-cyan-400 duration-300 ease-in-out hover:bg-cyan-500 rounded-full p-3 shadow-lg">
-                    <GiGoose className="text-white text-3xl" />
+                <div className="duration-300 ease-in-out rounded-full p-3 shadow-lg border border-black"
+                style={{
+                    backgroundImage: 'url("/assets/iconbkg.jpg")',
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+                >
+                    <GiGoose className="text-black text-3xl" />
                 </div>
             </motion.a>
         </nav>
