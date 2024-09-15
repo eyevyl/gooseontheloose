@@ -169,7 +169,7 @@ export async function POST(req: NextRequest) {
                     content: [
                         {
                             type: "text",
-                            text: 'Describe the unique trait of the goose you see, and what ID it is, return an ID of 0 if this goose is new. Return this in a json format in the form of {"id": int, trait: "trait"} with no other text or ```json. Some gooses may be real images, some may be plushies, some may be lego, but still define a trait. If the object or image is clearly not a goose return an id of -1.',
+                            text: 'Describe the unique trait of the goose you see, and what ID it is, return an ID of 0 if this goose is new. Return this in a json format in the form of {"id": int, trait: "trait"} with no other text or ```json. Some gooses may be real images, some may be plushies, some may be lego, but still define a trait. Pay attention to attire as well as the colour. If the object or image is clearly not a goose return an id of -1.',
                         },
                         {
                             type: "image_url",
