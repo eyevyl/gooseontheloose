@@ -9,7 +9,7 @@ export async function GET() {
 
 import { CohereClient } from "cohere-ai";
 const cohere = new CohereClient({
-    token: "gxlx7nP2yR7pbVnsyCNhgmWkRtNJrl8HLxFZ3R4A",
+    token: "vXgcspBSTmIWJv5fddeS66xe5rOSWmNMAGYz7I5f",
 });
 
 let gradeTest = 26;
