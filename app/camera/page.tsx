@@ -91,7 +91,7 @@ const Page: NextPage = () => {
                 >
                     {/* @ts-ignore */}
                     {({ getScreenshot }) => (
-                        <div className="absolute bottom-0 pb-20 w-[430px] p-4 flex items-center justify-center bg-black opacity-50">
+                        <div className="absolute bottom-0 pb-28 w-[430px] p-4 flex items-center justify-center bg-black opacity-50">
                             <button
                                 onClick={() => {
                                     upload(getScreenshot() as string);

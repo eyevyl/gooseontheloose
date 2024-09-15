@@ -26,6 +26,7 @@ export default function Map() {
     const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
     const [initialCenter, setInitialCenter] = useState(defaultCenter); // Map's initial center
     const [gotInitialPosition, setGotInitialPosition] = useState(false);
+    const [sightings, setSightings] = useState([]);
 
     // Function to update the user's location without moving the map center
     const updatePosition = (position: GeolocationPosition) => {
@@ -55,7 +56,6 @@ export default function Map() {
     // Watch the user's location in real-time, but do not move the map center after the first position
     useEffect(() => {
         if (navigator.geolocation) {
-            getSightings();
             const watchId = navigator.geolocation.watchPosition(
                 updatePosition,
                 (error) => {
@@ -84,13 +84,17 @@ export default function Map() {
 
             const data = await response.json();
             console.log(data);
-            return data;
+            setSightings(data);
         }
         catch (error) {
             console.error("Failed to fetch sightings:", error);
         }
         
     }
+
+    useEffect(() => {
+        getSightings();
+    }, []);
 
     return (
         <div>
@@ -117,6 +121,18 @@ export default function Map() {
                                 scaledSize: new google.maps.Size(40, 40),
                             }}
                         />
+                        {sightings.length > 0 ? sightings.map((sighting, index) => (
+                            <Marker
+                                key={sighting.id}
+                                position={{ lat: sighting.latitude, lng: sighting.longitude }}
+                                icon={{
+                                    url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                                    scaledSize: new google.maps.Size(40, 40),
+                                }}
+                                className={index >= 2 ? "hidden" : ""}
+                            />
+                        )) : <></>}
+                        {}
                     </GoogleMap>
                 </div>
             ) : (

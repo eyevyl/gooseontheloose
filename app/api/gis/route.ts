@@ -111,7 +111,14 @@ export async function POST(req: NextRequest) {
         } else if (parsedData.id === -1) {
             console.log("This is not a goose.")
         } else {
-            console.log("")
+            console.log("This goose has been found before.");
+            const goose = await Goose.findOne({ traitsPrompt : parsedData.trait});
+
+            const views = goose.views+1; 
+
+            const gooseData = {
+                views: views,
+            }
         }
 
         return NextResponse.json({
@@ -130,6 +137,10 @@ export async function POST(req: NextRequest) {
 async function getID() {
     return Math.floor(Math.random() * 9999999 + 10000000); 
 } 
+
+async function getProgram() {
+    return Math.floor(Math.random()*10);
+}
 
 async function getMidterm() {
     let sum = 0;

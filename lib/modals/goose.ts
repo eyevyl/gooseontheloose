@@ -10,6 +10,7 @@ const GooseSchema = new Schema(
         finder: { type: "string"},
         midterm: { type: Number},
         final: { type: Number},
+        program: { type: "string"}
     },
     {
         timestamps: true,
