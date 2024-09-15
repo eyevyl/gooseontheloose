@@ -81,19 +81,10 @@ const Page: NextPage = () => {
                 method: "GET",
             });
             const existingData = await res.json();
-            console.log(data);
-
-            // increment goose
-            const res2 = await fetch(`/api/getGoose/increment`, {
-                method: "POST",
-                body: JSON.stringify({
-                    id: data.id,
-                }),
-            });
+            console.log(existingData);
 
             
         }
-
         setProcessing(false);
     }
 
