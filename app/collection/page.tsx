@@ -5,6 +5,26 @@ import { RxCross2 } from "react-icons/rx";
 import { GiGoose } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
 
+const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+            delayChildren: 0,
+            staggerChildren: 0.2,
+        },
+    },
+};
+
+const item = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+    },
+};
+
 async function getGoose() {
     const req = await fetch("/api/getGoose");
     const json = await req.json();
@@ -52,7 +72,7 @@ export default function Collection() {
                     <GiGoose
                         className={`text-8xl z-0 text-indigo-700 m-6 mx-0 mb-0 animate-bounce`}
                     />
-                    <h1 className="text-center text-4xl font-black">
+                    <h1 className="text-center text-indigo-700 text-4xl font-black">
                         Loading...
                     </h1>
                 </div>
@@ -95,7 +115,7 @@ export default function Collection() {
 
                                     <div className="relative w-full h-full bg-white border border-gray-300 rounded-lg flex flex-col">
                                         <div className="flex justify-start items-center px-4 py-2 bg-blue-900 text-white rounded-t-lg">
-                                            <GiGoose className="text-4xl mr-2" />
+                                            <GiGoose className="text-4xl mr-2 z-50" />
                                             <span className="text-lg font-bold text-purple-300">
                                                 WAD
                                             </span>
@@ -156,48 +176,51 @@ export default function Collection() {
                     </h1>
 
                     {/* Collection of Geese */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full min-w-[430px] p-4 max-w-5xl overflow-y-auto">
-                        {geese.map((goose, index) => (
-                            <motion.div
-                                key={index}
-                                whileHover={{ scale: 1.05 }}
-                                className="p-6 bg-white rounded-3xl shadow-lg cursor-pointer flex items-center space-x-6"
-                                onClick={() => openGoose(goose)}
-                            >
-                                <img
-                                    src={goose.image}
-                                    alt={`${goose.name} sprite`}
-                                    className="rounded-full w-16 h-16 object-cover"
-                                />
-                                <div className="flex flex-col items-start">
-                                    <h1 className="text-xl font-bold text-black ">
-                                        {goose.name}
-                                    </h1>
-                                    <h1 className="text-lg font-medium text-black">
-                                        {goose.traitsPrompt}
-                                    </h1>
-                                </div>
-                            </motion.div>
-                        ))}
-                        <motion.a
-                            whileHover={{ scale: 1.05 }}
-                            className="p-6 bg-white rounded-3xl shadow-lg mb-20 justify-center cursor-pointer flex items-center space-x-6 cursor-pointer"
-                            href="/"
+                    {!loading && (
+                        <motion.div
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full min-w-[430px] p-4 max-w-5xl overflow-y-auto"
+                            variants={container}
+                            initial="hidden"
+                            animate="visible"
                         >
-                            {/* <img
-                                src={goose.image}
-                                alt={`${goose.name} sprite`}
-                                className="rounded-full w-16 h-16 object-cover"
-                            /> */}
-                            {/* Plus sign */}
-                            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-indigo-700 text-white text-4xl">
-                                +
-                            </div>
-                            <h1 className="text-xl font-medium text-indigo-700">
-                                Add to your collection!
-                            </h1>
-                        </motion.a>
-                    </div>
+                            {geese.map((goose, index) => (
+                                <motion.div
+                                    key={index}
+                                    whileHover={{ scale: 1.05 }}
+                                    className="p-6 bg-white rounded-3xl shadow-lg cursor-pointer flex items-center space-x-6"
+                                    onClick={() => openGoose(goose)}
+                                    variants={item}
+                                >
+                                    <img
+                                        src={goose.image}
+                                        alt={`${goose.name} sprite`}
+                                        className="rounded-full w-16 h-16 object-cover"
+                                    />
+                                    <div className="flex flex-col items-start">
+                                        <h1 className="text-xl font-bold text-black ">
+                                            {goose.name}
+                                        </h1>
+                                        <h1 className="text-lg font-medium text-black">
+                                            {goose.traitsPrompt}
+                                        </h1>
+                                    </div>
+                                </motion.div>
+                            ))}
+                            <motion.a
+                                whileHover={{ scale: 1.05 }}
+                                className="p-6 bg-white rounded-3xl shadow-lg mb-20 flex items-center space-x-6 cursor-pointer"
+                                href="/"
+                                variants={item}
+                            >
+                                <div className="w-12 h-12 flex mx-2 items-center justify-center rounded-full bg-indigo-700 text-white text-4xl">
+                                    +
+                                </div>
+                                <h1 className="text-xl font-bold text-indigo-700">
+                                    Add to your collection!
+                                </h1>
+                            </motion.a>
+                        </motion.div>
+                    )}
                 </div>
             </div>
         </>
