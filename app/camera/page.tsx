@@ -75,6 +75,23 @@ const Page: NextPage = () => {
             });
             const json = await res.json();
             console.log(json);
+        } else {
+            // Existing Goose
+            const res = await fetch(`/api/getGoose`, {
+                method: "GET",
+            });
+            const existingData = await res.json();
+            console.log(data);
+
+            // increment goose
+            const res2 = await fetch(`/api/getGoose/increment`, {
+                method: "POST",
+                body: JSON.stringify({
+                    id: data.id,
+                }),
+            });
+
+            
         }
 
         setProcessing(false);
