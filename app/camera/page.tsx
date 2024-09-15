@@ -59,26 +59,28 @@ const Page: NextPage = () => {
         setTimeout(() => setIsClicked(false), 1000);
     };
 
-    const fetchLocation = () => {
-        if (!navigator.geolocation) {
-          console.log("Geolocation is not supported by your browser.");
-          return;
-        }
-    
-        const success = (position: GeolocationPosition) => {
-          setCoordinates({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
+    const fetchLocation = (): Promise<Coordinates | null> => {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                console.log("Geolocation is not supported by your browser.");
+                resolve(null);
+                return;
+            }
 
-        };
-    
-        const error = () => {
-          console.log("Unable to retrieve your location.");
-        };
-    
-        navigator.geolocation.getCurrentPosition(success, error);
-      };
+            navigator.geolocation.getCurrentPosition(
+                (position: GeolocationPosition) => {
+                    resolve({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    });
+                },
+                () => {
+                    console.log("Unable to retrieve your location.");
+                    resolve(null);
+                }
+            );
+        });
+    };
 
     async function upload(thing: string) {
         setProcessing(true);
@@ -127,20 +129,26 @@ const Page: NextPage = () => {
             );
             setRealGoose(actualGoose);
             setShowCard(true);
-            fetchLocation();
+            const location = await fetchLocation();
+            setCoordinates(location);
+
             // send coords to mongodb
-            const res1 = await fetch(`/api/addSighting`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    latitude: coordinates?.latitude,
-                    longitude: coordinates?.longitude,
-                }),
-            });
-            const data1 = await res1.json();
-            console.log(data1);
+            if (location) {
+                const res1 = await fetch(`/api/addSighting`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        latitude: location.latitude,
+                        longitude: location.longitude,
+                    }),
+                });
+                const data1 = await res1.json();
+                console.log(data1);
+            } else {
+                console.log("No location data available.");
+            }
         } else {
             // Existing Goose
             const res = await fetch(`/api/getGoose`, {
@@ -181,9 +189,8 @@ const Page: NextPage = () => {
                                         handleClick();
                                     }
                                 }}
-                                className={`border-4 bg-transparent rounded-full p-8 transition-transform duration-200 ${
-                                    isClicked ? "animate-click" : ""
-                                }`}
+                                className={`border-4 bg-transparent rounded-full p-8 transition-transform duration-200 ${isClicked ? "animate-click" : ""
+                                    }`}
                             ></button>
                         </div>
                     )}
@@ -224,7 +231,7 @@ const Page: NextPage = () => {
                         exit={{ opacity: 0 }}
                     >
                         <div>
-                        <Wadcard goose={realGoose} />
+                            <Wadcard goose={realGoose} />
                         </div>
                     </motion.div>
                 )}
