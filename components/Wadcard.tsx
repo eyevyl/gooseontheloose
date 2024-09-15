@@ -84,8 +84,8 @@ export default function Wadcard({ goose }: { goose: GooseSchema }) {
                     >
                         Final: {goose.final}
                     </p>
-                    <p className="text-base font-bold text-center">{}</p>
-                    <p className="text-black">{goose.quote}</p>
+                    {/* <p className="text-base font-bold text-center">{}</p> */}
+                    {/* <p className="text-black">{goose.quote}</p> */}
                 </div>
             </div>
 
