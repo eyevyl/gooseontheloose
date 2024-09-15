@@ -53,7 +53,7 @@ export default function Map() {
         setMap(null);
     }, []);
 
-    // Watch the user's location in real-time, but do not move the map center after the first position
+    // get user's position 
     useEffect(() => {
         if (navigator.geolocation) {
             const watchId = navigator.geolocation.watchPosition(
@@ -68,7 +68,7 @@ export default function Map() {
                 }
             );
 
-            return () => navigator.geolocation.clearWatch(watchId); // Clean up watcher on unmount
+            return () => navigator.geolocation.clearWatch(watchId); 
         }
     }, []);
 
@@ -89,7 +89,7 @@ export default function Map() {
         catch (error) {
             console.error("Failed to fetch sightings:", error);
         }
-        
+
     }
 
     useEffect(() => {
@@ -113,7 +113,7 @@ export default function Map() {
                             disableDefaultUI: true,
                         }}
                     >
-                        {/* The marker follows the user's current position */}
+                        {/* User's current location */}
                         <Marker
                             position={currentPosition}
                             icon={{
@@ -121,18 +121,17 @@ export default function Map() {
                                 scaledSize: new google.maps.Size(40, 40),
                             }}
                         />
-                        {sightings.length > 0 ? sightings.map((sighting, index) => (
+                        {/* Goose Sightings */}
+                        {sightings.slice(0, 3).map((sighting: any, index: any) => (
                             <Marker
-                                key={sighting.id}
+                                key={index}
                                 position={{ lat: sighting.latitude, lng: sighting.longitude }}
                                 icon={{
                                     url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
                                     scaledSize: new google.maps.Size(40, 40),
                                 }}
-                                className={index >= 2 ? "hidden" : ""}
                             />
-                        )) : <></>}
-                        {}
+                        ))}
                     </GoogleMap>
                 </div>
             ) : (
