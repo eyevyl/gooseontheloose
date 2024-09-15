@@ -79,14 +79,15 @@ const Page: NextPage = () => {
     return (
         <>
             <div className="w-[430px] h-[932px] overscroll-none">
-                <div className="absolute w-[430px] bg-black opacity-50 h-12">
-                </div>
+                <div className="absolute w-[430px] bg-black opacity-50 h-12"></div>
+
                 <Webcam
                     audio={false}
                     height={932}
                     screenshotFormat="image/jpeg"
                     width={430}
                     videoConstraints={videoConstraints}
+                    className="w-full h-full"
                 >
                     {/* @ts-ignore */}
                     {({ getScreenshot }) => (
