@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GiGoose } from "react-icons/gi";
 import Faculty from "@/components/Faculty";
-// import quoteGoose from "@/app/api/cohere/route";
+import { quoteGoose } from "@/app/api/cohere/route";
 
 type GooseSchema = {
     id: number;
@@ -85,7 +85,7 @@ export default function Wadcard({ goose }: { goose: GooseSchema }) {
                         Final: {goose.final}
                     </p>
                     {/* <p className="text-base font-bold text-center">{}</p> */}
-                    {/* <p className="text-black">{goose.quote}</p> */}
+                    <p className="text-black">{quoteGoose(goose.final)}</p>
                 </div>
             </div>
 
