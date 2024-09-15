@@ -17,7 +17,7 @@ const client = new OpenAI();
 
 import { CohereClient } from "cohere-ai";
 const cohere = new CohereClient({
-    token: "gxlx7nP2yR7pbVnsyCNhgmWkRtNJrl8HLxFZ3R4A",
+    token: "ye8GSVLspvlotxoakcoHDVE81pg7D8bXoPArJX6A",
 });
 
 
@@ -26,6 +26,7 @@ async function getName() {
         model: "command",
         temperature: 0.7,
         seed: Math.trunc(Math.random() * 100) + 1,
+        maxTokens: 30,
         message:
             "Write a fun name for a goose. Only output the name and nothing else. ",
     });

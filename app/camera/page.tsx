@@ -4,6 +4,20 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import Webcam from "react-webcam";
 import { AnimatePresence, motion } from "framer-motion";
+import Wadcard from "@/components/Wadcard";
+
+type GooseSchema = {
+    id: number;
+    name: string;
+    image: string;
+    traitsPrompt: string;
+    views: number;
+    finder: string;
+    midterm: number;
+    final: number;
+    program: string;
+    quote: string;
+};
 
 const videoConstraints = {
     facingMode: ["environment", "user"],
@@ -27,6 +41,8 @@ const Page: NextPage = () => {
     const [processing, setProcessing] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [notGoose, setNotGoose] = useState(false);
+    const [showCard, setShowCard] = useState(false);
+    const [realGoose, setRealGoose] = useState<GooseSchema | null>(null);
 
     const handleNotGoose = () => {
         setTimeout(() => setNotGoose(false), 2000);
@@ -82,8 +98,11 @@ const Page: NextPage = () => {
             });
             const existingData = await res.json();
             console.log(existingData);
-
-            
+            const actualGoose: GooseSchema = existingData.find(
+                (goose: GooseSchema) => goose.id === data.id
+            );
+            setRealGoose(actualGoose);
+            setShowCard(true);
         }
         setProcessing(false);
     }
@@ -143,6 +162,20 @@ const Page: NextPage = () => {
                         exit={{ opacity: 0 }}
                     >
                         <p className="text-white">Not a goose...</p>
+                    </motion.div>
+                )}
+                {showCard && realGoose && (
+                    <motion.div
+                        className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-30 flex items-center justify-center"
+                        onClick={() => setShowCard(false)}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <div>
+                        <Wadcard goose={realGoose} />
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

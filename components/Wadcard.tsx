@@ -1,6 +1,7 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { GiGoose } from "react-icons/gi";
 import Faculty from "@/components/Faculty";
+// import quoteGoose from "@/app/api/cohere/route";
 
 type GooseSchema = {
     id: number;
@@ -16,6 +17,19 @@ type GooseSchema = {
 };
 
 export default function Wadcard({ goose }: { goose: GooseSchema }) {
+    // const [quote, setQuote] = useState("");
+    // useEffect(() => {
+    //     async function fetchQuote() {
+    //         const quote = await quoteGoose(goose.midterm);
+    //         if (quote) {
+    //             setQuote(quote.text);
+    //         } else {
+    //             setQuote("No quote found");
+    //         }
+    //     }
+    //     fetchQuote();
+    // });
+
     function getColour(midterm: number) {
         const red = Math.floor((100 - midterm) * 2.55);
         const green = Math.floor(midterm * 2.55);
@@ -70,6 +84,7 @@ export default function Wadcard({ goose }: { goose: GooseSchema }) {
                     >
                         Final: {goose.final}
                     </p>
+                    <p className="text-base font-bold text-center">{}</p>
                     <p className="text-black">{goose.quote}</p>
                 </div>
             </div>
