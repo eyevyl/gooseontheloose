@@ -113,9 +113,20 @@ export async function POST(req: NextRequest) {
         } else {
             console.log("This goose has been found before.");
             
-            
+            console.log("This goose has been found before.");
+            const goose = await Goose.findOne(
+                { traitsPrompt : parsedData.trait},
+            );
 
-            
+            const views = goose.views+1; 
+
+            const gooseUpdate = await Goose.findOneAndUpdate(
+                { traitsPrompt : parsedData.trait},
+                { $set: { views: views } },
+                { new: true},
+            );
+
+            console.log("Goose Updated: ", gooseUpdate);
         }
 
         return NextResponse.json({
