@@ -6,6 +6,11 @@ import Webcam from "react-webcam";
 import { AnimatePresence, motion } from "framer-motion";
 import Wadcard from "@/components/Wadcard";
 
+interface Coordinates {
+    latitude: number;
+    longitude: number;
+}
+
 type GooseSchema = {
     id: number;
     name: string;
@@ -43,6 +48,7 @@ const Page: NextPage = () => {
     const [notGoose, setNotGoose] = useState(false);
     const [showCard, setShowCard] = useState(false);
     const [realGoose, setRealGoose] = useState<GooseSchema | null>(null);
+    const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
 
     const handleNotGoose = () => {
         setTimeout(() => setNotGoose(false), 2000);
@@ -52,6 +58,27 @@ const Page: NextPage = () => {
         setIsClicked(true);
         setTimeout(() => setIsClicked(false), 1000);
     };
+
+    const fetchLocation = () => {
+        if (!navigator.geolocation) {
+          console.log("Geolocation is not supported by your browser.");
+          return;
+        }
+    
+        const success = (position: GeolocationPosition) => {
+          setCoordinates({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+
+        };
+    
+        const error = () => {
+          console.log("Unable to retrieve your location.");
+        };
+    
+        navigator.geolocation.getCurrentPosition(success, error);
+      };
 
     async function upload(thing: string) {
         setProcessing(true);
@@ -100,6 +127,20 @@ const Page: NextPage = () => {
             );
             setRealGoose(actualGoose);
             setShowCard(true);
+            fetchLocation();
+            // send coords to mongodb
+            const res1 = await fetch(`/api/addSighting`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    latitude: coordinates?.latitude,
+                    longitude: coordinates?.longitude,
+                }),
+            });
+            const data1 = await res1.json();
+            console.log(data1);
         } else {
             // Existing Goose
             const res = await fetch(`/api/getGoose`, {
