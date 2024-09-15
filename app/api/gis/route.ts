@@ -217,8 +217,11 @@ export async function POST(req: NextRequest) {
         
             for (const entry of allEntries) {
                 let entryFinal = entry.final;
-                const increase = Math.floor(midterm * (100 - entryFinal) / 10000);
+                console.log(entryFinal)
+                const increase = Math.floor((midterm * (100 - entryFinal) / 10000)*8);
+                console.log("Increase: " + increase);
                 entryFinal += increase; 
+                console.log("Final: " + entryFinal); 
 
                 await Goose.updateMany(
                     { id: entry.id },  
