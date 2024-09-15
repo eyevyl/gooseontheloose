@@ -34,15 +34,16 @@ const Page: NextPage = () => {
         <>
             {/* Full screen container for webcam */}
             <div className="w-full h-screen relative bg-black">
+                {/* Webcam component should touch the top of the screen */}
                 <Webcam
                     audio={false}
                     screenshotFormat="image/jpeg"
                     videoConstraints={videoConstraints}
-                    className="w-full h-full"
+                    className="absolute top-0 w-full h-full object-cover" // Ensures the webcam fills the screen and touches the top
                 >
                     {/* @ts-ignore */}
                     {({ getScreenshot }) => (
-                        <div className="absolute bottom-0 w-full p-4 flex items-center justify-center bg-black opacity-50 z-20">
+                        <div className="absolute bottom-20 w-full p-4 flex items-center justify-center z-20"> {/* Move the shutter button up from the bottom */}
                             <button
                                 onClick={() => {
                                     const screenshot = getScreenshot();
