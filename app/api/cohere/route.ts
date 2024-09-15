@@ -4,7 +4,7 @@ export async function GET() {
     console.log(response);
     console.log("response");
 
-    return NextResponse.json({ message: response?.text});
+    return NextResponse.json({ message: response?.text });
 }
 
 import { CohereClient } from "cohere-ai";
@@ -26,63 +26,62 @@ async function quoteGoose() {
             "Ralph Waldo Emerson",
             "Plato",
             "Epictetus",
-            "Jean-Paul Sartre"
-          ]
-        const randNum = Math.trunc(Math.random()*11);
-        while(1){
-        const chat = await cohere.chat({
-            model: "command",
-            temperature: 1,
-            seed: Math.trunc(Math.random()*20)+1,
-            message:
-                "Tell me a motivational, epic quote from a great philosopher like"+phil[randNum]+". Only include the quote, do not include the philosopher. Do not say anything else. No whitespace or \ or double quotes. Max 150 characters.",
-        });
-        if(chat.text.length<=200){
-            return chat;
+            "Jean-Paul Sartre",
+        ];
+        const randNum = Math.trunc(Math.random() * 11);
+        while (1) {
+            const chat = await cohere.chat({
+                model: "command",
+                temperature: 1,
+                seed: Math.trunc(Math.random() * 20) + 1,
+                message:
+                    "Tell me a motivational, epic quote from a great philosopher like" +
+                    phil[randNum] +
+                    ". Only include the quote, do not include the philosopher. Do not say anything else. No whitespace or  or double quotes. Max 150 characters.",
+            });
+            if (chat.text.length <= 200) {
+                return chat;
+            }
         }
-
-        
-    } 
-    }else if (gradeTest >= 60) {
-        while(1){
-        const chat = await cohere.chat({
-            model: "command",
-            temperature: 1.35,
-            seed: Math.trunc(Math.random()*100)+1,
-            message:
-                "Pretend you are an adult. Write a short sentence on advice for studying. One sentence long. No other text. Only use the advice sentence.",
-        });
-        if(chat.text.length<=130){
-        return chat;
+    } else if (gradeTest >= 60) {
+        while (1) {
+            const chat = await cohere.chat({
+                model: "command",
+                temperature: 1.35,
+                seed: Math.trunc(Math.random() * 100) + 1,
+                message:
+                    "Pretend you are an adult. Write a short sentence on advice for studying. One sentence long. No other text. Only use the advice sentence.",
+            });
+            if (chat.text.length <= 130) {
+                return chat;
+            }
         }
-    }
     } else if (gradeTest >= 40) {
-        while(1){
-        const chat = await cohere.chat({
-            model: "command",
-            temperature: 0.75,
-            seed: Math.trunc(Math.random()*100)+1,    
-            message:
-                "You're a goose, tell me simple advice for studying while adding only honk sound effects in your small sentence. One sentence long. No other text. Only use the goose sentence.",
-        });
-        if(chat.text.length<=120){
-            return chat;
+        while (1) {
+            const chat = await cohere.chat({
+                model: "command",
+                temperature: 0.75,
+                seed: Math.trunc(Math.random() * 100) + 1,
+                message:
+                    "You're a goose, tell me simple advice for studying while adding only honk sound effects in your small sentence. One sentence long. No other text. Only use the goose sentence.",
+            });
+            if (chat.text.length <= 120) {
+                return chat;
+            }
         }
-    }
-
     } else if (gradeTest < 40) {
-        while(1){
-        const chat = await cohere.chat({
-            model: "command",
-            temperature: 0.7,
-            seed: Math.trunc(Math.random()*100)+1,
-            message:
-                "You're a 3 year old. Tell me a short (4 words maximum) encouraging sentence for studying while adding the honk sound effect in your tiny sentence. One sentence long. No other text. Only use the goose sentence.",
-        });
-        if(chat.text.length<=30){
-            return chat;
+        while (1) {
+            const chat = await cohere.chat({
+                model: "command",
+                temperature: 0.7,
+                seed: Math.trunc(Math.random() * 100) + 1,
+                message:
+                    "You're a 3 year old. Tell me a short (4 words maximum) encouraging sentence for studying while adding the honk sound effect in your tiny sentence. One sentence long. No other text. Only use the goose sentence.",
+            });
+            if (chat.text.length <= 30) {
+                return chat;
+            }
         }
-    }   
     }
 }
 
@@ -90,11 +89,11 @@ async function getName() {
     const chatName = await cohere.chat({
         model: "command",
         temperature: 0.7,
-        seed: Math.trunc(Math.random()*100)+1,
+        seed: Math.trunc(Math.random() * 100) + 1,
         message:
             "Write a fun name for a goose. Only output the name and nothing else. ",
     });
-    if((chatName.text.length)>20){
+    if (chatName.text.length > 20) {
         const names = [
             "Goose Willis",
             "Quack McDuck",
@@ -186,12 +185,11 @@ async function getName() {
             "Goose McGlee",
             "Quackaroo Joy",
             "Feather Buzz",
-            "Waddle Smiles"
+            "Waddle Smiles",
         ];
-        let rand = Math.floor(Math.random()*75);
+        let rand = Math.floor(Math.random() * 75);
         return names[rand];
+    } else {
+        return chatName;
     }
-else{
-    return chatName;
-}
 }
