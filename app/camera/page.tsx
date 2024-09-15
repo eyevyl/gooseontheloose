@@ -38,7 +38,7 @@ const Page: NextPage = () => {
                     audio={false}
                     screenshotFormat="image/jpeg"
                     videoConstraints={videoConstraints}
-                    className="w-full h-full object-cover" // Make sure webcam covers full screen
+                    className="w-full h-full"
                 >
                     {/* @ts-ignore */}
                     {({ getScreenshot }) => (

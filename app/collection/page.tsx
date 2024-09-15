@@ -208,8 +208,8 @@ export default function Collection() {
                             ))}
                             <motion.a
                                 whileHover={{ scale: 1.05 }}
-                                className="p-6 bg-white rounded-3xl shadow-lg mb-20 flex items-center space-x-6 cursor-pointer"
-                                href="/"
+                                className="p-6 bg-white rounded-3xl shadow-lg mb-32 flex items-center space-x-6 cursor-pointer"
+                                href="/camera"
                                 variants={item}
                             >
                                 <div className="w-12 h-12 flex mx-2 items-center justify-center rounded-full bg-indigo-700 text-white text-4xl">
