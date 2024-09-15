@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
                 views: 1,
                 finder: "Hacker",
                 midterm: midterm,
-                final: 0,
+                final: midterm,
                 image: "https://i.imgur.com/3EdNkjH.png",
                 program: program,
             }  
