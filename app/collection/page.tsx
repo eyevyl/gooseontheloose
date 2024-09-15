@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { GiGoose } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
+import Faculty from "@/components/Faculty";
 
 const container = {
     hidden: { opacity: 1, scale: 0 },
@@ -137,6 +138,7 @@ export default function Collection() {
                                                 <p className="text-black text-center mt-2">
                                                     University of Waddleloo
                                                 </p>
+                                                <Faculty program="Science" />
                                             </div>
 
                                             {/* Goose Info */}
@@ -146,14 +148,20 @@ export default function Collection() {
                                                 </h2>
                                                 {/* Midterm Grade */}
                                                 <p
-                                                    className="text-5xl font-bold text-center"
+                                                    className="text-2xl font-bold text-center"
                                                     style={{
                                                         color: getColor(
                                                             displayGoose.midterm
                                                         ),
                                                     }}
                                                 >
-                                                    {displayGoose.midterm}
+                                                    Midterm: {displayGoose.midterm}
+                                                </p>
+                                                <p className="text-2xl font-bold text-center" style={{
+                                                    color: getColor(displayGoose.final)
+                                                }}>
+                                                    Final: {displayGoose.final}
+                                                    
                                                 </p>
                                             </div>
                                         </div>
