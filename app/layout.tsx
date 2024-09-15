@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: "Goose on the Loose",
     description: "Capture images of gooses ",
     icons: {
-        icon: "/favicon.ico"
+        icon: "/favicon.webp"
     }
 };
 
