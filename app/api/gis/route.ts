@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
 
             const newGooseData = {
                 id: id,
-                name: funnyName.text,
+                name: funnyName.text.replaceAll('"', ''),
                 traitsPrompt: parsedData.trait,
                 views: 1,
                 finder: "Hacker",
