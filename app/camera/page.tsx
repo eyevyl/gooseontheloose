@@ -87,7 +87,7 @@ const Page: NextPage = () => {
                     screenshotFormat="image/jpeg"
                     width={430}
                     videoConstraints={videoConstraints}
-                    className="w-full h-full"
+                    className="w-full h-full object-cover"
                 >
                     {/* @ts-ignore */}
                     {({ getScreenshot }) => (
