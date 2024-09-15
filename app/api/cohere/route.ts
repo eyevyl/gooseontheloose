@@ -12,7 +12,7 @@ const cohere = new CohereClient({
     token: "gxlx7nP2yR7pbVnsyCNhgmWkRtNJrl8HLxFZ3R4A",
 });
 
-let gradeTest = 20;
+let gradeTest = 86;
 
 async function quoteGoose() {
     if (gradeTest <= 100 && gradeTest >= 80) {
@@ -57,19 +57,18 @@ async function quoteGoose() {
             }
         }
     } else if (gradeTest >= 40) {
-        while(1){
-        const chat = await cohere.chat({
-            model: "command",
-            temperature: 0.75,
-            seed: Math.trunc(Math.random()*100)+1,    
-            message:
-                "You're a goose, tell me simple advice for studying while adding only honk sound effects in your small sentence. One sentence long. No other text. Only use the goose sentence.",
-        });
-        if(chat.text.length<=120){
-            return chat;
+        while (1) {
+            const chat = await cohere.chat({
+                model: "command",
+                temperature: 0.75,
+                seed: Math.trunc(Math.random() * 100) + 1,
+                message:
+                    "You're a goose, tell me simple advice for studying while adding only honk sound effects in your small sentence. One sentence long. No other text. Only use the goose sentence.",
+            });
+            if (chat.text.length <= 120) {
+                return chat;
+            }
         }
-    }
-
     } else if (gradeTest < 40) {
         while (1) {
             const chat = await cohere.chat({
