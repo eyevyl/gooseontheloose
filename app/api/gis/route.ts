@@ -92,6 +92,7 @@ export async function POST(req: NextRequest) {
             const id = await getID();
             const midterm = await getMidterm(); 
             const funnyName = await getName();
+            const program = await getProgram();
 
             const newGooseData = {
                 id: id,
@@ -101,7 +102,8 @@ export async function POST(req: NextRequest) {
                 finder: "Hacker",
                 midterm: midterm,
                 final: 0,
-                image: "https://i.imgur.com/3EdNkjH.png"
+                image: "https://i.imgur.com/3EdNkjH.png",
+                program: program,
             }  
             
             const newGoose = new Goose(newGooseData);
@@ -147,7 +149,9 @@ async function getID() {
 } 
 
 async function getProgram() {
-    return Math.floor(Math.random()*10);
+    const programs = ["Mathematics", "Engineering", "Health", "Science", "Environment", "Arts"];
+    const index = Math.floor(Math.random()*5+1);
+    return programs[index];
 }
 
 async function getMidterm() {
