@@ -114,17 +114,17 @@ export async function POST(req: NextRequest) {
             // Fetch all entries
             const allEntries = await Goose.find({});
 
-            // Loop through all entries to calculate `newValue` for each
-            /*for (const entry of allEntries) {
-                let entryMidterm = entry.midterm;
-                const increase = Math.floor(midterm * (100 - entryMidterm) / 10000);
-                entryMidterm += increase; 
+        
+            for (const entry of allEntries) {
+                let entryFinal = entry.final;
+                const increase = Math.floor(midterm * (100 - entryFinal) / 10000);
+                entryFinal += increase; 
 
                 await Goose.updateMany(
-                    { id: entry.id },  // Query to match the specific entry
-                    { $set: { newValue: newValue } }  // Update with the new calculated value
+                    { id: entry.id },  
+                    { $set: { final: entryFinal } }  
                 );
-            }*/
+            }
 
         } else if (parsedData.id === -1) {
             console.log("This is not a goose.")
