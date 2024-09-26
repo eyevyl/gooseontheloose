@@ -1,6 +1,9 @@
 # Goose on the Loose
 Seeing geese all over campus? Well now you can befriend and study with them.
 
+## Devpost
+[Devpost Link](https://devpost.com/software/goosehunt)
+
 ## Installation
 Install the latest version of Node and NPM, afterwards you'll need to setup API credentials with OpenAI, Cohere, as well as Google to access relevant services. You will also need to sign up for a free imgur account to access their API.
 
@@ -16,3 +19,7 @@ NEXT_PUBLIC_BASE_URL=
 ```
 
 ## Usage
+
+Simply install all dependencies after cloning with `npm install`.
+
+Run the project afterwards using `npm run dev`.
